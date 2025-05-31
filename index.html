@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PasskeyMe - Passkeys for Everyone | Easy Integration for Developers</title>
+    <meta name="description" content="Add secure passkey authentication to your web and mobile apps in minutes. Reduce friction, increase security, and improve user experience with PasskeyMe.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f8fafc;
+            --accent: #06b6d4;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --border: #e2e8f0;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .cta-button {
+            background: var(--gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23e2e8f0" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 35px -5px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* What is PasskeyMe */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* What are Passkeys */
+        .passkey-section {
+            background: var(--secondary);
+        }
+
+        .passkey-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .passkey-visual {
+            background: var(--gradient);
+            border-radius: 20px;
+            padding: 3rem;
+            color: white;
+            text-align: center;
+        }
+
+        .passkey-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-table {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-header {
+            background: var(--secondary);
+            font-weight: 600;
+        }
+
+        .comparison-cell {
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .check {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .cross {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        /* Who is this for */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .audience-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .audience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .audience-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .audience-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Integration Section */
+        .integration-section {
+            background: var(--text-primary);
+            color: white;
+        }
+
+        .code-example {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-highlight {
+            color: #06b6d4;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-section .section-title {
+            color: white;
+        }
+
+        .cta-section .section-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-primary);
+            color: white;
+            padding: 3rem 0 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-section a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 2rem;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .passkey-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .comparison-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">🔐 PasskeyMe</div>
+            <ul class="nav-links">
+                <li><a href="#what-is">What is PasskeyMe?</a></li>
+                <li><a href="#passkeys">What are Passkeys?</a></li>
+                <li><a href="#who-for">Who is this for?</a></li>
+                <li><a href="#integration">Integration</a></li>
+            </ul>
+            <a href="https://passkeyme.com" class="cta-button">Get Started</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1>Passkeys for Everyone</h1>
+                <p class="subtitle">Add secure, passwordless authentication to your web and mobile apps in minutes. Reduce friction, increase security, and delight your users with PasskeyMe.</p>
+                
+                <div class="hero-buttons">
+                    <a href="https://passkeyme.com" class="btn-primary">Start Building Now</a>
+                    <a href="#what-is" class="btn-secondary">Learn More</a>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">5min</span>
+                        <span class="stat-label">Integration Time</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">90%</span>
+                        <span class="stat-label">Faster Login</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">Zero</span>
+                        <span class="stat-label">Passwords Needed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">Phishing Resistant</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What is PasskeyMe Section -->
+    <section id="what-is" class="section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">What is PasskeyMe?</h2>
+                <p class="section-subtitle">PasskeyMe is the easiest and most affordable way for developers to add secure passkey authentication to their applications. No complex setup, no security headaches – just simple, powerful authentication.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Lightning Fast Integration</h3>
+                    <p class="feature-description">Get up and running in under 5 minutes with our simple API. Copy, paste, and you're done – no complex configuration required.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Developer-Friendly Pricing</h3>
+                    <p class="feature-description">Start free and scale affordably. Pay only for what you use with transparent, predictable pricing that grows with your business.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Enterprise-Grade Security</h3>
+                    <p class="feature-description">Built on WebAuthn standards with biometric authentication, multi-device sync, and complete phishing protection out of the box.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Universal Compatibility</h3>
+                    <p class="feature-description">Works seamlessly across web, iOS, and Android applications. One integration, every platform covered.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">Boost User Experience</h3>
+                    <p class="feature-description">Eliminate password fatigue and reduce login friction by 90%. Your users will love the instant, secure access.</p>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Analytics & Insights</h3>
+                    <p class="feature-description">Monitor authentication performance, track user adoption, and optimize your login flow with detailed analytics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What are Passkeys Section -->
+    <section id="passkeys" class="section passkey-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">What are Passkeys?</h2>
+                <p class="section-subtitle">Passkeys are the future of authentication – a secure, convenient replacement for passwords that uses your device's built-in biometrics or PIN.</p>
+            </div>
+
+            <div class="passkey-content">
+                <div class="fade-in">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 2rem;">How Passkeys Work</h3>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="font-size: 2rem;">👆</div>
+                            <div>
+                                <strong>Biometric Authentication</strong><br>
+                                <span style="color: var(--text-secondary);">Use Face ID, Touch ID, or Windows Hello</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="font-size: 2rem;">🔐</div>
+                            <div>
+                                <strong>Cryptographic Security</strong><br>
+                                <span style="color: var(--text-secondary);">Public-key cryptography prevents breaches</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="font-size: 2rem;">☁️</div>
+                            <div>
+                                <strong>Cross-Device Sync</strong><br>
+                                <span style="color: var(--text-secondary);">Works across all your devices seamlessly</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="passkey-visual fade-in">
+                    <div class="passkey-icon">🔑</div>
+                    <h3 style="margin-bottom: 1rem;">The Passkey Advantage</h3>
+                    <p>No more forgotten passwords, no more security breaches, no more friction. Just secure, instant access to your applications.</p>
+                </div>
+            </div>
+
+            <div class="comparison-table fade-in">
+                <div class="comparison-row comparison-header">
+                    <div class="comparison-cell">Feature</div>
+                    <div class="comparison-cell">Traditional Passwords</div>
+                    <div class="comparison-cell">Passkeys</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell"><strong>User Experience</strong></div>
+                    <div class="comparison-cell">Type complex passwords</div>
+                    <div class="comparison-cell">One tap authentication</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell"><strong>Security</strong></div>
+                    <div class="comparison-cell">Vulnerable to breaches</div>
+                    <div class="comparison-cell">Cryptographically secure</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell"><strong>Phishing Protection</strong></div>
+                    <div class="comparison-cell"><span class="cross">✗</span></div>
+                    <div class="comparison-cell"><span class="check">✓</span></div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell"><strong>Password Reset</strong></div>
+                    <div class="comparison-cell">Frequent support tickets</div>
+                    <div class="comparison-cell">Never needed</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-cell"><strong>Cross-Device</strong></div>
+                    <div class="comparison-cell">Manual sync required</div>
+                    <div class="comparison-cell">Automatic sync</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who is this for Section -->
+    <section id="who-for" class="section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Who is this for?</h2>
+                <p class="section-subtitle">PasskeyMe is perfect for developers and organizations who want to implement cutting-edge authentication without the complexity.</p>
+            </div>
+
+            <div class="audience-grid">
+                <div class="audience-card fade-in">
+                    <div class="audience-icon">👨‍💻</div>
+                    <h3 class="audience-title">Web Developers</h3>
+                    <p>Add secure authentication to your web apps with just a few lines of code. Perfect for SaaS platforms, e-commerce sites, and web applications.</p>
+                </div>
+
+                <div class="audience-card fade-in">
+                    <div class="audience-icon">📱</div>
+                    <h3 class="audience-title">Mobile App Developers</h3>
+                    <p>Implement biometric login in your iOS and Android apps. Reduce user churn and increase engagement with frictionless authentication.</p>
+                </div>
+
+                <div class="audience-card fade-in">
+                    <div class="audience-icon">🏢</div>
+                    <h3 class="audience-title">Enterprise Teams</h3>
+                    <p>Scale secure authentication across your organization. Reduce IT support tickets and improve security posture with passkey-based access.</p>
+                </div>
+
+                <div class="audience-card fade-in">
+                    <div class="audience-icon">🚀</div>
+                    <h3 class="audience-title">Startups</h3>
+                    <p>Launch faster with ready-to-use authentication. Focus on your core product while we handle the security complexity and compliance.</p>
+                </div>
+
+                <div class="audience-card fade-in">
+                    <div class="audience-icon">🛡️</div>
+                    <h3 class="audience-title">Security-First Organizations</h3>
+                    <p>Meet the highest security standards with FIDO2/WebAuthn compliance. Perfect for fintech, healthcare, and regulated industries.</p>
+                </div>
+
+                <div class="audience-card fade-in">
+                    <div class="audience-icon">🔄</div>
+                    <h3 class="audience-title">Legacy System Modernizers</h3>
+                    <p>Upgrade your existing authentication systems without a complete overhaul. Add modern security to legacy applications seamlessly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section id="integration" class="section integration-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Simple Integration</h2>
+                <p class="section-subtitle">Get started in minutes, not days. Our developer-friendly API makes passkey integration as simple as adding a login button.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+                <div class="fade-in">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 2rem; color: white;">3 Steps to Secure Login</h3>
+                    <div style="display: grid; gap: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: var(--accent); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">1</div>
+                            <div>
+                                <strong style="color: white;">Sign up & Get API Key</strong><br>
+                                <span style="color: rgba(255,255,255,0.8);">Free account setup in 30 seconds</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: var(--accent); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">2</div>
+                            <div>
+                                <strong style="color: white;">Add SDK to Your App</strong><br>
+                                <span style="color: rgba(255,255,255,0.8);">One line integration for web & mobile</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: var(--accent); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">3</div>
+                            <div>
+                                <strong style="color: white;">Deploy & Go Live</strong><br>
+                                <span style="color: rgba(255,255,255,0.8);">Your users can login with passkeys instantly</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-example fade-in">
+                    <div class="code-line">// <span class="code-highlight">Initialize PasskeyMe in your app</span></div>
+                    <div class="code-line">import { PasskeyMe } from '@passkeyme/sdk';</div>
+                    <div class="code-line"></div>
+                    <div class="code-line">const passkey = new PasskeyMe({</div>
+                    <div class="code-line">  apiKey: '<span class="code-highlight">your-api-key</span>',</div>
+                    <div class="code-line">  domain: '<span class="code-highlight">yourapp.com</span>'</div>
+                    <div class="code-line">});</div>
+                    <div class="code-line"></div>
+                    <div class="code-line">// <span class="code-highlight">Login with one function call</span></div>
+                    <div class="code-line">const user = await passkey.<span class="code-highlight">authenticate</span>();</div>
+                    <div class="code-line">console.log('User logged in:', user.id);</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Teaser Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Developer-Friendly Pricing</h2>
+                <p class="section-subtitle">Start free, scale affordably. No hidden fees, no surprises – just transparent pricing that grows with your success.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div class="feature-card fade-in" style="text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚀</div>
+                    <h3 style="color: var(--primary); font-size: 2rem; margin-bottom: 0.5rem;">Free</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Perfect for development</p>
+                    <ul style="list-style: none; text-align: left;">
+                        <li style="margin-bottom: 0.5rem;">✓ 1,000 authentications/month</li>
+                        <li style="margin-bottom: 0.5rem;">✓ All core features</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Community support</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card fade-in" style="text-align: center; border: 2px solid var(--primary);">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚡</div>
+                    <h3 style="color: var(--primary); font-size: 2rem; margin-bottom: 0.5rem;">Pro</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Scale with confidence</p>
+                    <ul style="list-style: none; text-align: left;">
+                        <li style="margin-bottom: 0.5rem;">✓ 50,000 authentications/month</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Advanced analytics</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Priority support</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Custom branding</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card fade-in" style="text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏢</div>
+                    <h3 style="color: var(--primary); font-size: 2rem; margin-bottom: 0.5rem;">Enterprise</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Unlimited scale</p>
+                    <ul style="list-style: none; text-align: left;">
+                        <li style="margin-bottom: 0.5rem;">✓ Unlimited authentications</li>
+                        <li style="margin-bottom: 0.5rem;">✓ SLA guarantees</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Dedicated support</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Custom integrations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section" style="background: var(--secondary);">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Loved by Developers</h2>
+                <p class="section-subtitle">Join thousands of developers who've already made the switch to passwordless authentication.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div class="feature-card fade-in">
+                    <div style="margin-bottom: 1rem; color: var(--primary);">⭐⭐⭐⭐⭐</div>
+                    <p style="font-style: italic; margin-bottom: 1.5rem; color: var(--text-secondary);">"Integration took less than an hour. Our users love the instant login experience, and we've seen a 40% reduction in support tickets."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SM</div>
+                        <div>
+                            <strong>Sarah Mitchell</strong><br>
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;">Lead Developer, TechFlow</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div style="margin-bottom: 1rem; color: var(--primary);">⭐⭐⭐⭐⭐</div>
+                    <p style="font-style: italic; margin-bottom: 1.5rem; color: var(--text-secondary);">"PasskeyMe made it trivial to add enterprise-grade security to our fintech app. The documentation is excellent and support is top-notch."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">MR</div>
+                        <div>
+                            <strong>Marcus Rodriguez</strong><br>
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;">CTO, SecureBank Pro</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div style="margin-bottom: 1rem; color: var(--primary);">⭐⭐⭐⭐⭐</div>
+                    <p style="font-style: italic; margin-bottom: 1.5rem; color: var(--text-secondary);">"We switched from building our own auth to PasskeyMe and saved months of development time. The pricing is incredibly fair for the value."</p>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 50px; height: 50px; background: var(--gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">AK</div>
+                        <div>
+                            <strong>Alex Kim</strong><br>
+                            <span style="color: var(--text-secondary); font-size: 0.9rem;">Founder, StartupLaunch</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Everything you need to know about implementing passkeys with PasskeyMe.</p>
+            </div>
+
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="feature-card fade-in" style="margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">How quickly can I integrate PasskeyMe?</h3>
+                    <p style="color: var(--text-secondary);">Most developers have passkey authentication working in under 30 minutes. Our SDK handles all the complexity, so you just need to add a few lines of code to your existing login flow.</p>
+                </div>
+
+                <div class="feature-card fade-in" style="margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">What devices and browsers support passkeys?</h3>
+                    <p style="color: var(--text-secondary);">Passkeys work on all modern devices and browsers, including iOS 16+, Android 9+, Chrome 67+, Safari 14+, Firefox 60+, and Edge 18+. That covers over 95% of your users!</p>
+                </div>
+
+                <div class="feature-card fade-in" style="margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Can I use PasskeyMe alongside existing authentication?</h3>
+                    <p style="color: var(--text-secondary);">Absolutely! PasskeyMe is designed to work alongside your existing login methods. You can gradually migrate users to passkeys while maintaining backward compatibility.</p>
+                </div>
+
+                <div class="feature-card fade-in" style="margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">What about users who don't have compatible devices?</h3>
+                    <p style="color: var(--text-secondary);">PasskeyMe gracefully falls back to traditional authentication methods for unsupported devices, ensuring all your users can still access your application.</p>
+                </div>
+
+                <div class="feature-card fade-in" style="margin-bottom: 1.5rem;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Is PasskeyMe compliant with security standards?</h3>
+                    <p style="color: var(--text-secondary);">Yes! PasskeyMe is built on FIDO2/WebAuthn standards and meets compliance requirements for PCI DSS, SOC 2, GDPR, and other major security frameworks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="cta-section section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2 class="section-title">Ready to Go Passwordless?</h2>
+                <p class="section-subtitle">Join thousands of developers who've already made the switch. Start building with PasskeyMe today – it's free to get started!</p>
+                
+                <div style="margin-top: 2rem;">
+                    <a href="https://passkeyme.com" class="btn-primary" style="background: white; color: var(--primary); margin-right: 1rem;">Start Free Trial</a>
+                    <a href="https://passkeyme.com" class="btn-secondary" style="border-color: white; color: white;">View Documentation</a>
+                </div>
+                
+                <p style="margin-top: 2rem; color: rgba(255,255,255,0.8); font-size: 0.9rem;">
+                    🚀 Get started in minutes • 💰 Free forever plan • 🔒 Enterprise-grade security
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>🔐 PasskeyMe</h4>
+                    <p style="color: var(--text-light); margin-top: 1rem;">Making passwordless authentication accessible to every developer and organization.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
+                        <a href="https://passkeyme.com">Dashboard</a>
+                        <a href="https://passkeyme.com">Documentation</a>
+                        <a href="https://passkeyme.com">API Reference</a>
+                        <a href="https://passkeyme.com">Pricing</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
+                        <a href="https://passkeyme.com">Help Center</a>
+                        <a href="https://passkeyme.com">Contact Support</a>
+                        <a href="https://passkeyme.com">Status Page</a>
+                        <a href="https://passkeyme.com">Community</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
+                        <a href="https://passkeyme.com">About Us</a>
+                        <a href="https://passkeyme.com">Blog</a>
+                        <a href="https://passkeyme.com">Careers</a>
+                        <a href="https://passkeyme.com">Security</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 PasskeyMe. All rights reserved. Built with ❤️ for developers everywhere.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Add loading animation to CTA buttons
+        document.querySelectorAll('.btn-primary, .cta-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Don't prevent default - let the link work
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
